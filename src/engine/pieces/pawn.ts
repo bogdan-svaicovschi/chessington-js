@@ -30,11 +30,13 @@ export default class Pawn extends Piece {
 
         if (!board.getPiece(position1)) {
             result.push(position1);
+
+            if (position.row == this.startRow && !board.getPiece(position2)) {
+                result.push(position2);
+            }
         }
 
-        if (position.row == this.startRow && !board.getPiece(position2)) {
-            result.push(position2);
-        }
+        
 
         return result;
     }
