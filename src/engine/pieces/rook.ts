@@ -14,31 +14,35 @@ export default class Rook extends Piece {
         const position: Square = board.findPiece(this);
         const result : Array<Square> = new Array;
         for (let i = position.row + 1; i < 8; i++) {
-            if (board.getPiece(Square.at(i, position.col))) {
+            const position1: Square = Square.at(i, position.col);
+            if (board.getPiece(position1)) {
                 break;
             }
-            result.push(Square.at(i, position.col));
+            result.push(position1);
         }
 
         for (let i = position.row - 1; i >= 0; i--) {
-            if (board.getPiece(Square.at(i, position.col))) {
+            const position1: Square = Square.at(i, position.col);
+            if (board.getPiece(position1)) {
                 break;
             }
-            result.push(Square.at(i, position.col));
+            result.push(position1);
         }
 
         for (let i = position.col + 1; i < 8; i++) {
-            if (board.getPiece(Square.at(position.row, i))) {
+            const position1: Square = Square.at(position.row, i);
+            if (board.getPiece(position1)) {
                 break;
             }
-            result.push(Square.at(position.row, i));
+            result.push(position1);
         }
 
         for (let i = position.col - 1; i >= 0; i--) {
-            if (board.getPiece(Square.at(position.row, i))) {
+            const position1: Square = Square.at(position.row, i);
+            if (board.getPiece(position1)) {
                 break;
             }
-            result.push(Square.at(position.row, i));
+            result.push(position1);
         }
 
         return result;
