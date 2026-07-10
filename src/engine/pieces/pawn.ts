@@ -8,14 +8,17 @@ export default class Pawn extends Piece {
     private ONEJUMP: number = 1;
     private TWOJUMP: number = 2;
     private EXPONENTIAL: number;
+    private startRow: number;
 
 
     public constructor(player: Player) {
         super(player);
         if (player == Player.WHITE) {
             this.EXPONENTIAL = 1;
+            this.startRow = 1;
         } else {
            this.EXPONENTIAL = -1; 
+           this.startRow = 6;
         }
     }
 
@@ -29,7 +32,7 @@ export default class Pawn extends Piece {
             result.push(position1);
         }
 
-        if (this.move == 0 && !board.getPiece(position2)) {
+        if (position.row == this.startRow && !board.getPiece(position2)) {
             result.push(position2);
         }
 
