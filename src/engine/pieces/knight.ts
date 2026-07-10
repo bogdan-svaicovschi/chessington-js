@@ -1,13 +1,28 @@
 import Piece from './piece';
 import Player from '../player';
 import Board from '../board';
+import Square from '../square';
 
 export default class Knight extends Piece {
+
+    private POSLIST: number[] = [1, 1, -1, -1, 2, -2, 2, -2];
+    private LENGTH: number = 7;
+
     public constructor(player: Player) {
         super(player);
     }
 
     public getAvailableMoves(board: Board) {
-        return new Array(0);
+        const result: Array<Square> = new Array;
+        const position: Square = board.findPiece(this);
+
+        for (let i = 0; i < 8; i ++) {
+            const position1: Square = Square.at(position.row + this.POSLIST[i], position.col + this.POSLIST[this.LENGTH - i]);
+            if (!board.getPiece(position1)) {
+                result.push(position1);
+            }
+        }
+
+        return result;
     }
 }
