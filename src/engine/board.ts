@@ -36,6 +36,7 @@ export default class Board {
         if (movingPiece && movingPiece.player === this.currentPlayer) {
             this.setPiece(toSquare, movingPiece);
             this.setPiece(fromSquare, undefined);
+            movingPiece.setMove(movingPiece.getMove() + 1);
             this.currentPlayer = (this.currentPlayer === Player.WHITE ? Player.BLACK : Player.WHITE);
         }
     }

@@ -5,9 +5,10 @@ import Square from '../square';
 
 export default class Pawn extends Piece {
 
-    private ONEJUMP: Number = 1;
-    private TWOJUMP: Number = 2;
-    private EXPONENTIAL: Number;
+    private ONEJUMP: number = 1;
+    private TWOJUMP: number = 2;
+    private EXPONENTIAL: number;
+
 
     public constructor(player: Player) {
         super(player);
@@ -21,7 +22,17 @@ export default class Pawn extends Piece {
     public getAvailableMoves(board: Board) {
         const position : Square = board.findPiece(this);
         const result : Array<Square> = new Array;
+        const position1: Square = Square.at(position.row + this.EXPONENTIAL * this.ONEJUMP, position.col);
+        const position2: Square = Square.at(position.row + this.EXPONENTIAL * this.TWOJUMP, position.col);
 
-        
+        if (!board.getPiece(position1)) {
+            result.push(position1);
+        }
+
+        if (this.move == 0 && !board.getPiece(position2)) {
+            result.push(position2);
+        }
+
+        return result;
     }
 }
