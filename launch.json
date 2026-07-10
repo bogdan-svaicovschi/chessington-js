@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "args": [
+                "--require", "ts-node/register",
+                "--timeout", "999999",
+                "--colors",
+                "${workspaceFolder}/tests/**/*.ts",
+            ],
+            "internalConsoleOptions": "neverOpen",
+            "console": "integratedTerminal",
+            "name": "Mocha Tests",
+            "program": "${workspaceRoot}/node_modules/.bin/mocha",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "windows": {
+                "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha"
+            },
+            "type": "node"
+        }
+    ]
+}
