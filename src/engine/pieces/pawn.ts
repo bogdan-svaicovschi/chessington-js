@@ -33,19 +33,19 @@ export default class Pawn extends Piece {
         const firstTakePosition: Square = Square.at(position.row + this.DIRECTION * this.ONEJUMP, position.col + this.POSITIVE);
         const secondTakePosition: Square = Square.at(position.row + this.DIRECTION * this.ONEJUMP, position.col + this.NEGATIVE);
 
-        if (this.checkConditions(board, oneJumpPosition)) {
+        if (this.checkPossiblePosition(board, oneJumpPosition)) {
             result.push(oneJumpPosition);
 
-            if (position.row == this.startRow && this.checkConditions(board, twoJumpPosition)) {
+            if (position.row == this.startRow && this.checkPossiblePosition(board, twoJumpPosition)) {
                 result.push(twoJumpPosition);
             }
         }
 
-        if (this.checkIfTakeable(board, firstTakePosition)) {
+        if (this.checkPossibleTake(board, firstTakePosition)) {
             result.push(firstTakePosition);
         }
 
-        if (this.checkIfTakeable(board, secondTakePosition)) {
+        if (this.checkPossibleTake(board, secondTakePosition)) {
             result.push(secondTakePosition);
         }
  

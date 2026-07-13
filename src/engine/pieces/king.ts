@@ -18,9 +18,9 @@ export default class King extends Piece {
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
                 const futurePosition: Square = Square.at(row + i, col + j);
-                if (this.checkConditions(board, futurePosition)) {
+                if (this.checkPossiblePosition(board, futurePosition)) {
                     result.push(futurePosition);
-                } else if (this.checkIfTakeable(board, futurePosition)) {
+                } else if (this.checkPossibleTake(board, futurePosition)) {
                     result.push(futurePosition);
                 }
             }

@@ -24,7 +24,7 @@ export default class Piece {
         board.movePiece(currentSquare, newSquare);
     }
 
-    private checkIfLegal(position: Square): boolean {
+    private checkTableBoundaries(position: Square): boolean {
         if (position.row < this.MIN_VALUE || position.row > this.MAX_VALUE
             || position.col < this.MIN_VALUE || position.col > this.MAX_VALUE) {
             return false;
@@ -33,9 +33,9 @@ export default class Piece {
         return true;
     }
 
-    protected checkConditions(board: Board, position: Square): boolean {
+    protected checkPossiblePosition(board: Board, position: Square): boolean {
 
-        if (!this.checkIfLegal(position)) {
+        if (!this.checkTableBoundaries(position)) {
             return false;
         }
 
@@ -46,9 +46,9 @@ export default class Piece {
         return true;
     }
 
-    protected checkIfTakeable(board: Board, position: Square): boolean {
+    protected checkPossibleTake(board: Board, position: Square): boolean {
 
-        if (this.checkIfLegal(position)) {
+        if (this.checkTableBoundaries(position)) {
             const piece:Piece | undefined = board.getPiece(position);
             if (piece?.player != this.player && piece?.type() != "King" && piece) {
                 return true;

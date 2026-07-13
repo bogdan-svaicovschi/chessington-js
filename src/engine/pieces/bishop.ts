@@ -16,12 +16,12 @@ export default class Bishop extends Piece {
         const result : Array<Square> = new Array;
         let futurePosition: Square = Square.at(position.row + rowModifier, position.col + colModifier);
         
-        while (this.checkConditions(board,futurePosition)) {
+        while (this.checkPossiblePosition(board,futurePosition)) {
             result.push(futurePosition);
             futurePosition = Square.at(futurePosition.row + rowModifier, futurePosition.col + colModifier);
         }
 
-        if (this.checkIfTakeable(board, futurePosition)) {
+        if (this.checkPossibleTake(board, futurePosition)) {
             result.push(futurePosition);
         }
 
