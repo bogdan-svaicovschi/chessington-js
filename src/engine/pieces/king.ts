@@ -8,14 +8,6 @@ export default class King extends Piece {
         super(player);
     }
 
-    private checkIfLegal(row: number, col: number) {
-        if (row < 0 || row > 7 || col < 0 || col > 7) {
-            return false;
-        }
-
-        return true;
-    }
-
     public getAvailableMoves(board: Board) {
         const position: Square = board.findPiece(this);
         const result: Array<Square> = new Array;
@@ -24,19 +16,19 @@ export default class King extends Piece {
 
 
         for (let i = 0; i < 3; i++) {
-            const newRow = row + i;
             for (let j = 0; j < 3; j++) {
-                const newCol = col + j;
-                if (this.checkIfLegal(newRow, newCol)) {
-                    const pos1:Square = Square.at(newRow, newCol);
-                    if (!board.getPiece(pos1)) {
-                        result.push(pos1);
-                    }
+                const futurePosition: Square = Square.at(row + i, col + j);
+                if (this.checkConditions(board, futurePosition)) {
+                    result.push(futurePosition);
                 }
             }
         }
 
         return result;
 
+    }
+
+    public type() {
+        return "King";
     }
 }

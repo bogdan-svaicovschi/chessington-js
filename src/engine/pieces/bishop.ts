@@ -4,74 +4,51 @@ import Board from '../board';
 import Square from '../square';
 
 export default class Bishop extends Piece {
+
+    private NEGATIVE: number = -1;
+    private POSITIVE: number = 1;
+
+
     public constructor(player: Player) {
         super(player);
     }
 
-    private checkIfLegal(row: number, col: number) {
-        if (row < 0 || row > 7 || col < 0 || col > 7) {
-            return false;
+
+    private iterateBishopLoop(board:Board, position:Square, rowModifier:number, colModifier:number) {
+        const result : Array<Square> = new Array;
+        let futurePosition: Square = Square.at(position.row + rowModifier, position.col + colModifier);
+        
+        while (this.checkConditions(board,futurePosition)) {
+            result.push(futurePosition);
+            futurePosition = Square.at(futurePosition.row + rowModifier, futurePosition.col + colModifier);
         }
 
-        return true;
+        if (this.checkIfLegal(futurePosition)) {
+            const piece:Piece | undefined = board.getPiece(futurePosition);
+            if (piece?.player != this.player && piece?.type() != "King") {
+                result.push(futurePosition);
+            }
+            
+        }
+
+        return result;
     }
+        
 
     public getAvailableMoves(board: Board) {
         const position: Square = board.findPiece(this);
         const result : Array<Square> = new Array;
 
-        for (let i = 1; i < 8; i++) {
-            const row: number = position.row + i;
-            const col: number = position.col - i;
-            const position1 = Square.at(row, col);
-            if (!this.checkIfLegal(row, col)) {
-                break;
-            }
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
-        }
-
-        for (let i = 1; i < 8; i++) {
-            const row: number = position.row + i;
-            const col: number = position.col + i;
-            const position1 = Square.at(row, col);
-            if (!this.checkIfLegal(row, col)) {
-                break;
-            }
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
-        }
-
-        for (let i = 1; i < 8; i++) {
-            const row: number = position.row - i;
-            const col: number = position.col - i;
-            const position1 = Square.at(row, col);
-            if (!this.checkIfLegal(row, col)) {
-                break;
-            }
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
-        }
-
-        for (let i = 1; i < 8; i++) {
-            const row: number = position.row - i;
-            const col: number = position.col + i;
-            const position1 = Square.at(row, col);
-            if (!this.checkIfLegal(row, col)) {
-                break;
-            }
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
-        }
+        result.push.apply(result, this.iterateBishopLoop(board, position, this.POSITIVE, this.NEGATIVE));
+        result.push.apply(result, this.iterateBishopLoop(board, position, this.POSITIVE, this.POSITIVE));
+        result.push.apply(result, this.iterateBishopLoop(board, position, this.NEGATIVE, this.NEGATIVE));
+        result.push.apply(result, this.iterateBishopLoop(board, position, this.NEGATIVE, this.POSITIVE));
 
         return result;
+
+    }
+
+    public type() {
+        return "Bishop";
     }
 }

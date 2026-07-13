@@ -4,111 +4,78 @@ import Board from '../board';
 import Square from '../square';
 
 export default class Queen extends Piece {
+
+    private NEGATIVE: number = -1;
+    private POSITIVE: number = 1;
+
+    private COLMODIFIERS: number[] = [1, -1, 0, 0];
+    private ROWMODIFIERS: number[] = [0, 0, 1, -1];
+
     public constructor(player: Player) {
         super(player);
     }
 
-    private checkLateral(board: Board) {
-        const position: Square = board.findPiece(this);
+    private iterateRookLoop(board: Board, position: Square, rowModifier:number, colModifier:number ){
         const result : Array<Square> = new Array;
-        for (let i = position.row + 1; i < 8; i++) {
-            const position1: Square = Square.at(i, position.col);
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
+        let futurePosition: Square = Square.at(position.row + rowModifier, position.col + colModifier)
+
+        while(this.checkConditions(board, futurePosition)) {
+            result.push(futurePosition);
+            futurePosition = Square.at(futurePosition.row + rowModifier, futurePosition.col + colModifier)
         }
 
-        for (let i = position.row - 1; i >= 0; i--) {
-            const position1: Square = Square.at(i, position.col);
-            if (board.getPiece(position1)) {
-                break;
+        if (this.checkIfLegal(futurePosition)) {
+            const piece:Piece | undefined = board.getPiece(futurePosition);
+            if (piece?.player != this.player && piece?.type() != "King") {
+                result.push(futurePosition);
             }
-            result.push(position1);
-        }
-
-        for (let i = position.col + 1; i < 8; i++) {
-            const position1: Square = Square.at(position.row, i);
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
-        }
-
-        for (let i = position.col - 1; i >= 0; i--) {
-            const position1: Square = Square.at(position.row, i);
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
+            
         }
 
         return result;
     }
 
-    private checkIfLegal(row: number, col: number) {
-        if (row < 0 || row > 7 || col < 0 || col > 7) {
-            return false;
+    private checkLateral(board: Board) {
+        const position: Square = board.findPiece(this);
+        const result : Array<Square> = new Array;
+        for (let i = 0; i < this.COLMODIFIERS.length; i++) {
+            result.push.apply(result, this.iterateRookLoop(board, position, this.COLMODIFIERS[i], this.ROWMODIFIERS[i]));
         }
 
-        return true;
+        return result;
     }
+
+
+    private iterateBishopLoop(board:Board, position:Square, rowModifier:number, colModifier:number) {
+        const result : Array<Square> = new Array;
+        let futurePosition: Square = Square.at(position.row + rowModifier, position.col + colModifier);
+        
+        while (this.checkConditions(board,futurePosition)) {
+            result.push(futurePosition);
+            futurePosition = Square.at(futurePosition.row + rowModifier, futurePosition.col + colModifier);
+        }
+
+        if (this.checkIfLegal(futurePosition)) {
+            const piece:Piece | undefined = board.getPiece(futurePosition);
+            if (piece?.player != this.player && piece?.type() != "King") {
+                result.push(futurePosition);
+            }
+            
+        }
+
+        return result;
+    }
+
+    
 
     private checkDiagonally(board: Board) {
         const position: Square = board.findPiece(this);
         const result : Array<Square> = new Array;
 
-        for (let i = 1; i < 8; i++) {
-            const row: number = position.row + i;
-            const col: number = position.col - i;
-            const position1 = Square.at(row, col);
-            if (!this.checkIfLegal(row, col)) {
-                break;
-            }
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
-        }
-
-        for (let i = 1; i < 8; i++) {
-            const row: number = position.row + i;
-            const col: number = position.col + i;
-            const position1 = Square.at(row, col);
-            if (!this.checkIfLegal(row, col)) {
-                break;
-            }
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
-        }
-
-        for (let i = 1; i < 8; i++) {
-            const row: number = position.row - i;
-            const col: number = position.col - i;
-            const position1 = Square.at(row, col);
-            if (!this.checkIfLegal(row, col)) {
-                break;
-            }
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
-        }
-
-        for (let i = 1; i < 8; i++) {
-            const row: number = position.row - i;
-            const col: number = position.col + i;
-            const position1 = Square.at(row, col);
-            if (!this.checkIfLegal(row, col)) {
-                break;
-            }
-            if (board.getPiece(position1)) {
-                break;
-            }
-            result.push(position1);
-        }
+        result.push.apply(result, this.iterateBishopLoop(board, position, this.POSITIVE, this.NEGATIVE));
+        result.push.apply(result, this.iterateBishopLoop(board, position, this.POSITIVE, this.POSITIVE));
+        result.push.apply(result, this.iterateBishopLoop(board, position, this.NEGATIVE, this.NEGATIVE));
+        result.push.apply(result, this.iterateBishopLoop(board, position, this.NEGATIVE, this.POSITIVE));
 
         return result;
     }
@@ -120,5 +87,9 @@ export default class Queen extends Piece {
         result.push.apply(result, this.checkLateral(board));
 
         return result;
+    }
+
+    public type() {
+        return "Queen";
     }
 }

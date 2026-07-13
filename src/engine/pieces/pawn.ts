@@ -25,19 +25,21 @@ export default class Pawn extends Piece {
     public getAvailableMoves(board: Board) {
         const position : Square = board.findPiece(this);
         const result : Array<Square> = new Array;
-        const position1: Square = Square.at(position.row + this.EXPONENTIAL * this.ONEJUMP, position.col);
-        const position2: Square = Square.at(position.row + this.EXPONENTIAL * this.TWOJUMP, position.col);
+        const oneJumpPosition: Square = Square.at(position.row + this.EXPONENTIAL * this.ONEJUMP, position.col);
+        const twoJumpPosition: Square = Square.at(position.row + this.EXPONENTIAL * this.TWOJUMP, position.col);
 
-        if (!board.getPiece(position1)) {
-            result.push(position1);
+        if (this.checkConditions(board, oneJumpPosition)) {
+            result.push(oneJumpPosition);
 
-            if (position.row == this.startRow && !board.getPiece(position2)) {
-                result.push(position2);
+            if (position.row == this.startRow && this.checkConditions(board, twoJumpPosition)) {
+                result.push(twoJumpPosition);
             }
         }
 
-        
-
         return result;
+    }
+
+    public type() {
+        return "Pawn";
     }
 }

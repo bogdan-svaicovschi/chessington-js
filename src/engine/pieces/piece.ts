@@ -4,6 +4,8 @@ import Square from '../square';
 
 export default class Piece {
     public player: Player;
+    protected MAX_VALUE: number = 7;
+    protected MIN_VALUE: number = 0;
 
     public constructor(player: Player) {
         this.player = player;
@@ -13,9 +15,39 @@ export default class Piece {
         throw new Error('This method must be implemented, and return a list of available moves');
     }
 
+    public type() {
+        return "Piece";
+    }
+
     public moveTo(board: Board, newSquare: Square) {
         const currentSquare = board.findPiece(this);
         board.movePiece(currentSquare, newSquare);
+    }
+
+
+
+    protected checkIfLegal(position: Square) {
+        if (position.row < this.MIN_VALUE || position.row > this.MAX_VALUE
+            || position.col < this.MIN_VALUE || position.col > this.MAX_VALUE) {
+            return false;
+        }
+    
+        return true;
+    }
+
+
+
+    protected checkConditions(board: Board, position: Square) {
+
+        if (!this.checkIfLegal(position)) {
+            return false;
+        }
+
+        if (board.getPiece(position)) {
+            return false;
+        }
+
+        return true;
     }
 
 }

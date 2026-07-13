@@ -17,12 +17,16 @@ export default class Knight extends Piece {
         const position: Square = board.findPiece(this);
 
         for (let i = 0; i < 8; i ++) {
-            const position1: Square = Square.at(position.row + this.POSLIST[i], position.col + this.POSLIST[this.LENGTH - i]);
-            if (!board.getPiece(position1)) {
-                result.push(position1);
+            const futurePosition: Square = Square.at(position.row + this.POSLIST[i], position.col + this.POSLIST[this.LENGTH - i]);
+            if (this.checkConditions(board, futurePosition)) {
+                result.push(futurePosition);
             }
         }
 
         return result;
+    }
+
+    public type() {
+        return "Knight";
     }
 }
