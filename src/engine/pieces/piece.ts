@@ -50,4 +50,16 @@ export default class Piece {
         return true;
     }
 
+    protected checkIfTakeable(board: Board, position: Square) {
+
+        if (this.checkIfLegal(position)) {
+            const piece:Piece | undefined = board.getPiece(position);
+            if (piece?.player != this.player && piece?.type() != "King" && piece) {
+                return true;
+            } 
+        }
+
+        return false;
+    }
+
 }

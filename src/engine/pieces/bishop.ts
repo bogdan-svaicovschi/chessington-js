@@ -23,12 +23,8 @@ export default class Bishop extends Piece {
             futurePosition = Square.at(futurePosition.row + rowModifier, futurePosition.col + colModifier);
         }
 
-        if (this.checkIfLegal(futurePosition)) {
-            const piece:Piece | undefined = board.getPiece(futurePosition);
-            if (piece?.player != this.player && piece?.type() != "King") {
-                result.push(futurePosition);
-            }
-            
+        if (this.checkIfTakeable(board, futurePosition)) {
+            result.push(futurePosition);
         }
 
         return result;

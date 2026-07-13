@@ -20,7 +20,10 @@ export default class Knight extends Piece {
             const futurePosition: Square = Square.at(position.row + this.POSLIST[i], position.col + this.POSLIST[this.LENGTH - i]);
             if (this.checkConditions(board, futurePosition)) {
                 result.push(futurePosition);
+            } else if (this.checkIfTakeable(board, futurePosition)) {
+                result.push(futurePosition);
             }
+            
         }
 
         return result;

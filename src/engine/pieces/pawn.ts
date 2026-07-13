@@ -7,6 +7,8 @@ export default class Pawn extends Piece {
 
     private ONEJUMP: number = 1;
     private TWOJUMP: number = 2;
+    private NEGATIVE: number = -1;
+    private POSITIVE: number = 1;
     private EXPONENTIAL: number;
     private startRow: number;
 
@@ -23,10 +25,13 @@ export default class Pawn extends Piece {
     }
 
     public getAvailableMoves(board: Board) {
+        
         const position : Square = board.findPiece(this);
         const result : Array<Square> = new Array;
         const oneJumpPosition: Square = Square.at(position.row + this.EXPONENTIAL * this.ONEJUMP, position.col);
         const twoJumpPosition: Square = Square.at(position.row + this.EXPONENTIAL * this.TWOJUMP, position.col);
+        const firstTakePosition: Square = Square.at(position.row + this.EXPONENTIAL * this.ONEJUMP, position.col + this.POSITIVE);
+        const secondTakePosition: Square = Square.at(position.row + this.EXPONENTIAL * this.ONEJUMP, position.col + this.NEGATIVE);
 
         if (this.checkConditions(board, oneJumpPosition)) {
             result.push(oneJumpPosition);
@@ -36,8 +41,17 @@ export default class Pawn extends Piece {
             }
         }
 
+        if (this.checkIfTakeable(board, firstTakePosition)) {
+            result.push(firstTakePosition);
+        }
+
+        if (this.checkIfTakeable(board, secondTakePosition)) {
+            result.push(secondTakePosition);
+        }
+ 
         return result;
     }
+
 
     public type() {
         return "Pawn";
