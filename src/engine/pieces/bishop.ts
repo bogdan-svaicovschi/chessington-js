@@ -8,11 +8,9 @@ export default class Bishop extends Piece {
     private NEGATIVE: number = -1;
     private POSITIVE: number = 1;
 
-
     public constructor(player: Player) {
         super(player);
     }
-
 
     private iterateBishopLoop(board:Board, position:Square, rowModifier:number, colModifier:number) {
         const result : Array<Square> = new Array;
@@ -30,8 +28,8 @@ export default class Bishop extends Piece {
         return result;
     }
         
-
     public getAvailableMoves(board: Board) {
+
         const position: Square = board.findPiece(this);
         const result : Array<Square> = new Array;
 
@@ -41,7 +39,6 @@ export default class Bishop extends Piece {
         result.push.apply(result, this.iterateBishopLoop(board, position, this.NEGATIVE, this.POSITIVE));
 
         return result;
-
     }
 
     public type() {

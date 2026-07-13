@@ -38,7 +38,6 @@ export default class Rook extends Piece {
         }
 
         return result;
-        
     }
 
     public type() {

@@ -24,9 +24,7 @@ export default class Piece {
         board.movePiece(currentSquare, newSquare);
     }
 
-
-
-    protected checkIfLegal(position: Square) {
+    private checkIfLegal(position: Square): boolean {
         if (position.row < this.MIN_VALUE || position.row > this.MAX_VALUE
             || position.col < this.MIN_VALUE || position.col > this.MAX_VALUE) {
             return false;
@@ -35,9 +33,7 @@ export default class Piece {
         return true;
     }
 
-
-
-    protected checkConditions(board: Board, position: Square) {
+    protected checkConditions(board: Board, position: Square): boolean {
 
         if (!this.checkIfLegal(position)) {
             return false;
@@ -50,7 +46,7 @@ export default class Piece {
         return true;
     }
 
-    protected checkIfTakeable(board: Board, position: Square) {
+    protected checkIfTakeable(board: Board, position: Square): boolean {
 
         if (this.checkIfLegal(position)) {
             const piece:Piece | undefined = board.getPiece(position);
@@ -61,5 +57,4 @@ export default class Piece {
 
         return false;
     }
-
 }

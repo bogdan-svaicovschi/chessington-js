@@ -41,7 +41,6 @@ export default class Queen extends Piece {
         return result;
     }
 
-
     private iterateBishopLoop(board:Board, position:Square, rowModifier:number, colModifier:number) {
         const result : Array<Square> = new Array;
         let futurePosition: Square = Square.at(position.row + rowModifier, position.col + colModifier);
@@ -57,8 +56,6 @@ export default class Queen extends Piece {
 
         return result;
     }
-
-    
 
     private checkDiagonally(board: Board) {
         const position: Square = board.findPiece(this);
