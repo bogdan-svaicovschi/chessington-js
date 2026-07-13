@@ -4,6 +4,9 @@ import Board from '../board';
 import Square from '../square';
 
 export default class King extends Piece {
+
+    private POSITIONMODIFIERS: number[] = [-1, 0, 1];
+
     public constructor(player: Player) {
         super(player);
     }
@@ -11,13 +14,11 @@ export default class King extends Piece {
     public getAvailableMoves(board: Board) {
         const position: Square = board.findPiece(this);
         const result: Array<Square> = new Array;
-        const col: number = position.col - 1;
-        const row: number = position.row - 1;
 
 
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                const futurePosition: Square = Square.at(row + i, col + j);
+        for (let i = 0; i < this.POSITIONMODIFIERS.length; i++) {
+            for (let j = 0; j < this.POSITIONMODIFIERS.length; j++) {
+                const futurePosition: Square = Square.at(position.row + this.POSITIONMODIFIERS[i], position.col + this.POSITIONMODIFIERS[j]);
                 if (this.checkPossiblePosition(board, futurePosition)) {
                     result.push(futurePosition);
                 } else if (this.checkPossibleTake(board, futurePosition)) {
